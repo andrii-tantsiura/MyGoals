@@ -6,18 +6,34 @@ import {
   StyleSheet,
   Modal,
   Image,
+  Pressable,
 } from "react-native";
+
+import CustomButton from "./CustomButton";
 
 function GoalInput(props) {
   const [enteredGoalText, setEnteredGoalText] = useState("");
+  const [canAddGoal, setCanAddGoal] = useState(false);
 
   function goalInputHandler(enteredText) {
     setEnteredGoalText(enteredText);
+    setCanAddGoal(false);
   }
 
   function addGoalHandler() {
-    props.onAddGoal(enteredGoalText);
+    if (enteredGoalText) {
+      props.onAddGoal(enteredGoalText);
+
+      setEnteredGoalText("");
+    } else {
+      setCanAddGoal(true);
+    }
+  }
+
+  function cancelHandler() {
     setEnteredGoalText("");
+    setCanAddGoal(false);
+    props.onCancel();
   }
 
   return (
@@ -28,18 +44,35 @@ function GoalInput(props) {
           source={require("../assets/images/goal_1.png")}
         />
         <TextInput
-          style={styles.textInput}
+          style={[styles.textInput, canAddGoal && styles.wrongTextInput]}
+          autoFocus={true}
           placeholder="Your course goal!"
           value={enteredGoalText}
           onChangeText={goalInputHandler}
         />
         <View style={styles.buttonContainer}>
-          <View style={styles.button}>
-            <Button title="Add Goal" color="#5E0acc" onPress={addGoalHandler} />
-          </View>
-          <View style={styles.button}>
-            <Button title="Cancel" color={"#f31282"} onPress={props.onCancel} />
-          </View>
+          <CustomButton
+            title="Add Goal"
+            textStyle={{ color: "white" }}
+            style={[
+              styles.customButton,
+              {
+                backgroundColor: "#5E0acc",
+              },
+            ]}
+            onPress={addGoalHandler}
+          />
+          <CustomButton
+            title="Cancel"
+            textStyle={{ color: "white" }}
+            style={[
+              styles.customButton,
+              {
+                backgroundColor: "#f31282",
+              },
+            ]}
+            onPress={cancelHandler}
+          />
         </View>
       </View>
     </Modal>
@@ -60,11 +93,11 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
-    margin: 20,
+    margin: 30,
   },
   buttonContainer: {
     flexDirection: "row",
-    marginTop: 16,
+    marginTop: 26,
   },
   textInput: {
     borderWidth: 1,
@@ -73,10 +106,15 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     color: "#120438",
     width: "100%",
-    padding: 16,
+    borderWidth: 2,
+    padding: 12,
+    margin: 1,
   },
-  button: {
-    width: 100,
+  wrongTextInput: {
+    borderColor: "red",
+  },
+  customButton: {
+    width: "40%",
     marginHorizontal: 8,
   },
 });

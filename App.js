@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 
 import GoalItem from "./components/GoalItem";
 import GoalInput from "./components/GoalInput";
+import CustomButton from "./components/CustomButton";
 
 export default function App() {
   const [courseGoals, setGoals] = useState([]);
@@ -46,9 +47,10 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <View style={styles.appContainer}>
-        <Button
+        <CustomButton
           title="Add New Goal"
-          color="#9049ec"
+          style={{ backgroundColor: "#9049ec", color: "white" }}
+          textStyle={{ color: "white" }}
           onPress={startAddGoalHandler}
         />
         <GoalInput
