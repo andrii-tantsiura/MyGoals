@@ -1,16 +1,24 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import CheckBox from "./CheckBox";
 import CustomButton from "./CustomButton";
 
 function GoalItem(props) {
   return (
     <View style={styles.goalItem}>
-      <Text numberOfLines={1} style={styles.goalText}>
+      <CheckBox
+        borderStyle={styles.checkBox.border}
+        imageStyle={styles.checkBox.image}
+        imageSource={require("../assets/images/check.png")}
+        isChecked={props.isChecked}
+        onChange={props.onChange.bind(this, props.id)}
+      />
+      <Text style={styles.goalText} numberOfLines={1}>
         {props.text}
       </Text>
       <CustomButton
+        style={styles.customButton}
+        textStyle={{ fontSize: 24, color: "#e96b6b", paddingRight: 4 }}
         title="x"
-        style={{ backgroundColor: "transparent" }}
-        textStyle={{ fontSize: 24, color: "#e96b6b" }}
         onPress={props.onDeleteItem.bind(this, props.id)}
       />
     </View>
@@ -21,14 +29,13 @@ export default GoalItem;
 
 const styles = StyleSheet.create({
   goalItem: {
-    margin: 4,
-    paddingHorizontal: 4,
-    borderRadius: 6,
     flexDirection: "row",
-    backgroundColor: "#5e0acc",
-    justifyContent: "space-between",
     alignItems: "center",
-    alignContent: "center",
+    columnGap: 8,
+    margin: 4,
+    paddingHorizontal: 8,
+    borderRadius: 6,
+    backgroundColor: "#5e0acc",
   },
   pressedItem: {
     opacity: 0.5,
@@ -36,7 +43,19 @@ const styles = StyleSheet.create({
   goalText: {
     flex: 1,
     color: "white",
-    padding: 8,
     fontSize: 16,
+  },
+  customButton: {
+    backgroundColor: "transparent",
+  },
+  checkBox: {
+    border: {
+      borderWidth: 2,
+      borderRadius: 4,
+      borderColor: "#aeabe6",
+    },
+    image: {
+      tintColor: "#aeabe6",
+    },
   },
 });

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FlatList, StyleSheet, View, Button } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 import GoalItem from "./components/GoalItem";
@@ -8,7 +8,7 @@ import CustomButton from "./components/CustomButton";
 import ConfirmDialog from "./components/ConfirmDialog";
 
 export default function App() {
-  const [courseGoals, setGoals] = useState([]);
+  const [goals, setGoals] = useState([]);
   const [isGoalAddVisible, setIsGoalAddVisible] = useState(false);
   const [currentGoalId, setCurrentGoalId] = useState(null);
   const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] =
@@ -26,8 +26,9 @@ export default function App() {
     setGoals((currentCourseGoals) => [
       ...currentCourseGoals,
       {
-        text: enteredGoalText,
         id: Math.random().toString(),
+        isChecked: false,
+        text: enteredGoalText,
       },
     ]);
     setIsGoalAddVisible(false);
@@ -51,12 +52,31 @@ export default function App() {
     setIsDeleteConfirmationVisible(false);
   }
 
+  function changeCheckGoalHandler(id) {
+    setGoals((currentGoals) => {
+      const goalIndex = currentGoals.findIndex((goal) => goal.id === id);
+
+      if (goalIndex > -1) {
+        const goal = currentGoals[goalIndex];
+        goal.isChecked = !goal.isChecked;
+
+        currentGoals.splice(goalIndex, 1, goal);
+      }
+
+      return [...currentGoals];
+    });
+  }
+
   const goalItem = (itemData, index) => (
-    <GoalItem
-      id={itemData.item.id}
-      text={itemData.item.text}
-      onDeleteItem={startDeleteGoalHandler}
-    />
+    <View>
+      <GoalItem
+        id={itemData.item.id}
+        text={itemData.item.text}
+        isChecked={itemData.item.isChecked}
+        onChange={changeCheckGoalHandler}
+        onDeleteItem={startDeleteGoalHandler}
+      />
+    </View>
   );
 
   return (
@@ -84,7 +104,7 @@ export default function App() {
         />
         <View style={styles.goalsContainer}>
           <FlatList
-            data={courseGoals}
+            data={goals}
             renderItem={goalItem}
             keyExtractor={(item, index) => item.id}
             alwaysBounceVertical={false}

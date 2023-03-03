@@ -1,15 +1,13 @@
-import { Pressable, Text, StyleSheet, View } from "react-native";
+import { Pressable, Text, StyleSheet } from "react-native";
 
 function CustomButton(props) {
-  function getButtonStyle(pressed) {
-    return pressed
-      ? [styles.button, props.style, styles.pressedButton, props.pressedStyle]
-      : [styles.button, props.style];
-  }
-
   return (
     <Pressable
-      style={({ pressed }) => getButtonStyle(pressed)}
+      style={({ pressed }) => [
+        styles.button,
+        props.style,
+        pressed && [styles.pressedButton, props.pressedStyle],
+      ]}
       onPress={props.onPress}
     >
       <Text style={[styles.text, props.textStyle]}>{props.title}</Text>

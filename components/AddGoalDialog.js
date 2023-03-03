@@ -15,7 +15,6 @@ function AddGoalDialog(props) {
   function addGoalHandler() {
     if (enteredGoalText) {
       props.onAddGoal(enteredGoalText);
-
       setEnteredGoalText("");
     } else {
       setCanAddGoal(true);
@@ -25,6 +24,7 @@ function AddGoalDialog(props) {
   function cancelHandler() {
     setEnteredGoalText("");
     setCanAddGoal(false);
+
     props.onCancel();
   }
 
@@ -38,7 +38,7 @@ function AddGoalDialog(props) {
         <TextInput
           style={[styles.textInput, canAddGoal && styles.wrongTextInput]}
           autoFocus={true}
-          placeholder="Your course goal!"
+          placeholder="Enter your goal..."
           value={enteredGoalText}
           onChangeText={goalInputHandler}
         />
@@ -46,23 +46,13 @@ function AddGoalDialog(props) {
           <CustomButton
             title="Add Goal"
             textStyle={{ color: "white" }}
-            style={[
-              styles.customButton,
-              {
-                backgroundColor: "#5E0acc",
-              },
-            ]}
+            style={[styles.button]}
             onPress={addGoalHandler}
           />
           <CustomButton
             title="Cancel"
             textStyle={{ color: "white" }}
-            style={[
-              styles.customButton,
-              {
-                backgroundColor: "#f31282",
-              },
-            ]}
+            style={[styles.button, styles.cancelButton]}
             onPress={cancelHandler}
           />
         </View>
@@ -105,8 +95,12 @@ const styles = StyleSheet.create({
   wrongTextInput: {
     borderColor: "red",
   },
-  customButton: {
+  button: {
     width: "40%",
     marginHorizontal: 8,
+    backgroundColor: "#5E0acc",
+  },
+  cancelButton: {
+    backgroundColor: "#f31282",
   },
 });

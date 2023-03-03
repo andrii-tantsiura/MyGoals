@@ -10,14 +10,14 @@ function ConfirmDialog(props) {
           <View style={styles.buttonContainer}>
             <CustomButton
               style={[styles.button, styles.confirmButton]}
-              title={props.confirmText}
               textStyle={{ color: "white" }}
+              title={props.confirmText}
               onPress={props.onConfirm}
             />
             <CustomButton
               style={styles.button}
-              title={props.cancelText}
               textStyle={{ color: "white" }}
+              title={props.cancelText}
               onPress={props.onCancel}
             />
           </View>
@@ -40,9 +40,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#805ad9",
     alignItems: "center",
     rowGap: 16,
-    padding: 20,
+    paddingHorizontal: 20,
     paddingVertical: 24,
-    borderRadius: 10,
+    borderRadius: 12,
   },
   buttonContainer: {
     flexDirection: "row",
