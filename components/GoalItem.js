@@ -4,7 +4,7 @@ import CustomButton from "./CustomButton";
 
 function GoalItem(props) {
   return (
-    <View style={styles.goalItem}>
+    <View style={[styles.itemContainer, props.isChecked && styles.checked]}>
       <CheckBox
         borderStyle={styles.checkBox.border}
         imageStyle={styles.checkBox.image}
@@ -12,12 +12,15 @@ function GoalItem(props) {
         isChecked={props.isChecked}
         onChange={props.onChange.bind(this, props.id)}
       />
-      <Text style={styles.goalText} numberOfLines={1}>
+      <Text
+        style={[styles.text, props.isChecked && styles.checkedText]}
+        numberOfLines={1}
+      >
         {props.text}
       </Text>
       <CustomButton
         style={styles.customButton}
-        textStyle={{ fontSize: 24, color: "#e96b6b", paddingRight: 4 }}
+        textStyle={styles.customButtonText}
         title="x"
         onPress={props.onDeleteItem.bind(this, props.id)}
       />
@@ -28,7 +31,7 @@ function GoalItem(props) {
 export default GoalItem;
 
 const styles = StyleSheet.create({
-  goalItem: {
+  itemContainer: {
     flexDirection: "row",
     alignItems: "center",
     columnGap: 8,
@@ -37,16 +40,27 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: "#5e0acc",
   },
-  pressedItem: {
-    opacity: 0.5,
+  checked: {
+    opacity: 0.45,
   },
-  goalText: {
+  pressedItem: {
+    opacity: 0.8,
+  },
+  text: {
     flex: 1,
     color: "white",
     fontSize: 16,
   },
+  checkedText: {
+    textDecorationLine: "line-through",
+  },
   customButton: {
     backgroundColor: "transparent",
+  },
+  customButtonText: {
+    fontSize: 24,
+    color: "#e96b6b",
+    paddingRight: 4,
   },
   checkBox: {
     border: {

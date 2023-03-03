@@ -67,6 +67,11 @@ export default function App() {
     });
   }
 
+  const sortedGoals = [
+    ...goals.filter((x) => !x.isChecked),
+    ...goals.filter((x) => x.isChecked),
+  ];
+
   const goalItem = (itemData, index) => (
     <View>
       <GoalItem
@@ -104,7 +109,7 @@ export default function App() {
         />
         <View style={styles.goalsContainer}>
           <FlatList
-            data={goals}
+            data={sortedGoals}
             renderItem={goalItem}
             keyExtractor={(item, index) => item.id}
             alwaysBounceVertical={false}
