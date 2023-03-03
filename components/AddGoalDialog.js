@@ -1,17 +1,9 @@
 import { useState } from "react";
-import {
-  View,
-  TextInput,
-  Button,
-  StyleSheet,
-  Modal,
-  Image,
-  Pressable,
-} from "react-native";
+import { View, TextInput, StyleSheet, Modal, Image } from "react-native";
 
 import CustomButton from "./CustomButton";
 
-function GoalInput(props) {
+function AddGoalDialog(props) {
   const [enteredGoalText, setEnteredGoalText] = useState("");
   const [canAddGoal, setCanAddGoal] = useState(false);
 
@@ -79,7 +71,7 @@ function GoalInput(props) {
   );
 }
 
-export default GoalInput;
+export default AddGoalDialog;
 
 const styles = StyleSheet.create({
   inputContainer: {

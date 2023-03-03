@@ -3,19 +3,23 @@ import { FlatList, StyleSheet, View, Button } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 import GoalItem from "./components/GoalItem";
-import GoalInput from "./components/GoalInput";
+import AddGoalDialog from "./components/AddGoalDialog";
 import CustomButton from "./components/CustomButton";
+import ConfirmDialog from "./components/ConfirmDialog";
 
 export default function App() {
   const [courseGoals, setGoals] = useState([]);
-  const [modalIsVisible, setModalIsVisible] = useState(false);
+  const [isGoalAddVisible, setIsGoalAddVisible] = useState(false);
+  const [currentGoalId, setCurrentGoalId] = useState(null);
+  const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] =
+    useState(false);
 
   function startAddGoalHandler() {
-    setModalIsVisible(true);
+    setIsGoalAddVisible(true);
   }
 
   function endAddGoalHandler() {
-    setModalIsVisible(false);
+    setIsGoalAddVisible(false);
   }
 
   function addGoalHandler(enteredGoalText) {
@@ -26,20 +30,32 @@ export default function App() {
         id: Math.random().toString(),
       },
     ]);
-    setModalIsVisible(false);
+    setIsGoalAddVisible(false);
   }
 
-  function deleteGoalHandler(id) {
+  function startDeleteGoalHandler(id) {
+    setCurrentGoalId(id);
+    setIsDeleteConfirmationVisible(true);
+  }
+
+  function endDeleteGoalHandler() {
+    setIsDeleteConfirmationVisible(false);
+  }
+
+  function deleteGoalHandler() {
     setGoals((currentGoals) => {
-      return currentGoals.filter((goal) => goal.id !== id);
+      return currentGoals.filter((goal) => goal.id !== currentGoalId);
     });
+
+    setCurrentGoalId(null);
+    setIsDeleteConfirmationVisible(false);
   }
 
   const goalItem = (itemData, index) => (
     <GoalItem
       id={itemData.item.id}
       text={itemData.item.text}
-      onDeleteItem={deleteGoalHandler}
+      onDeleteItem={startDeleteGoalHandler}
     />
   );
 
@@ -49,14 +65,22 @@ export default function App() {
       <View style={styles.appContainer}>
         <CustomButton
           title="Add New Goal"
-          style={{ backgroundColor: "#9049ec", color: "white" }}
+          style={styles.button}
           textStyle={{ color: "white" }}
           onPress={startAddGoalHandler}
         />
-        <GoalInput
-          visible={modalIsVisible}
+        <AddGoalDialog
+          visible={isGoalAddVisible}
           onAddGoal={addGoalHandler}
           onCancel={endAddGoalHandler}
+        />
+        <ConfirmDialog
+          visible={isDeleteConfirmationVisible}
+          text="Goal will be removed. Are you sure?"
+          confirmText="Remove"
+          cancelText="Cancel"
+          onConfirm={deleteGoalHandler}
+          onCancel={endDeleteGoalHandler}
         />
         <View style={styles.goalsContainer}>
           <FlatList
@@ -77,9 +101,13 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 16,
   },
-
   goalsContainer: {
     flex: 5,
     flexDirection: "column",
+  },
+  button: {
+    backgroundColor: "#9049ec",
+    color: "white",
+    marginBottom: 14,
   },
 });
