@@ -1,4 +1,4 @@
-## Description 
+# MyGoals 
 The ToDo app was developed as part of the Udemy-React Native-Practical Guide Course [2023]. Allows you to add new goals, delete them, and Mark them as completed.
 
 ## Stack
